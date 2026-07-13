@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仕事の相性・残酷診断</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ランディング -->
+  <div id="screen-landing" class="screen active">
+    <div class="landing-wrap">
+      <p class="landing-eyebrow">BRUTAL CAREER DIAGNOSIS</p>
+      <h1 class="landing-title">仕事の相性<br><em>残酷診断</em></h1>
+      <p class="landing-sub">あなたは今の仕事と本当に合っていますか？<br>10問の質問が、あなたのキャリアの真実を暴きます。</p>
+      <button class="btn-primary" onclick="startQuiz()">診断スタート</button>
+      <div class="landing-meta">
+        <span>全10問</span>
+        <span>約2分</span>
+        <span>8タイプ診断</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- クイズ -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-top">
+      <div class="progress-row">
+        <span id="q-label">質問 1 / 10</span>
+        <span id="q-pct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+    <div class="quiz-body">
+      <div class="q-card">
+        <p class="q-num" id="q-num">Q1</p>
+        <p class="q-text" id="q-text"></p>
+        <div class="choices" id="choices"></div>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn-back" id="btn-back" onclick="prevQuestion()" disabled>← 戻る</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>次へ →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 結果 -->
+  <div id="screen-result" class="screen">
+    <div class="result-hero" id="result-hero">
+      <p class="result-eyebrow">YOUR CAREER TYPE</p>
+      <div class="result-badge" id="result-badge">
+        <span class="badge-label">診断タイプ</span>
+        <span class="badge-type" id="badge-type"></span>
+        <span class="badge-nick" id="badge-nick"></span>
+      </div>
+    </div>
+    <div class="result-body">
+      <div class="r-card">
+        <p class="r-card-title">あなたはこんな人</p>
+        <p class="r-desc" id="r-desc"></p>
+      </div>
+      <div class="r-card">
+        <p class="r-card-title">向いている仕事</p>
+        <div class="tags" id="tags-good"></div>
+      </div>
+      <div class="r-card">
+        <p class="r-card-title">避けた方がいい環境</p>
+        <div class="tags" id="tags-bad"></div>
+      </div>
+      <div class="r-card">
+        <p class="r-card-title">次の行動</p>
+        <ul class="next-list" id="next-list"></ul>
+      </div>
+      <div class="sharp-block">
+        <p class="sharp-label">残酷な一言</p>
+        <p class="sharp-text" id="sharp-text"></p>
+      </div>
+      <button class="retry-btn" onclick="restart()">もう一度診断する</button>
+      <p class="note">※この診断は娯楽目的です。転職・退職の意思決定は自己責任でどうぞ。</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
