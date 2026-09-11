@@ -10,76 +10,231 @@
 
   <!-- ランディング -->
   <div id="screen-landing" class="screen active">
-    <div class="landing-wrap">
-      <p class="landing-eyebrow">BRUTAL CAREER DIAGNOSIS</p>
-      <h1 class="landing-title">仕事の相性<br><em>残酷診断</em></h1>
-      <p class="landing-sub">あなたは今の仕事と本当に合っていますか？<br>10問の質問が、あなたのキャリアの真実を暴きます。</p>
-      <button class="btn-primary" onclick="startQuiz()">診断スタート</button>
-      <div class="landing-meta">
-        <span>全10問</span>
-        <span>約2分</span>
-        <span>8タイプ診断</span>
-      </div>
+    <div class="landing-inner">
+      <img src="./images/キャラクター集合シークレット.png" class="landing-hero-img" alt="キャラクター集合" onerror="this.style.display='none'">
+      <p class="landing-eyebrow">CAREER DIAGNOSIS</p>
+      <h1 class="landing-title">今の仕事がしんどいのは、<br><em>あなたが弱いからじゃない。</em></h1>
+      <p class="landing-sub">35問で、あなたの職業タイプ・向いている環境・今の職場に削られている理由を診断します。結果は少し辛口。でも、次に取るべき行動までわかります。</p>
+      <button class="btn-start" onclick="showDemographics()">無料で診断する</button>
+      <ul class="landing-meta">
+        <li>診断時間：約3分</li>
+        <li>登録不要</li>
+        <li>結果はすぐ表示</li>
+      </ul>
     </div>
   </div>
 
-  <!-- クイズ -->
-  <div id="screen-quiz" class="screen">
-    <div class="quiz-top">
-      <div class="progress-row">
-        <span id="q-label">質問 1 / 10</span>
-        <span id="q-pct">0%</span>
+  <!-- 属性質問（任意） -->
+  <div id="screen-demographics" class="screen">
+    <div class="demo-inner">
+      <p class="demo-eyebrow">OPTIONAL — スキップ可能</p>
+      <h2 class="demo-title">精度を上げる3つの質問</h2>
+      <p class="demo-sub">回答は統計目的にのみ使用されます。スキップしても診断できます。</p>
+
+      <div class="demo-block">
+        <p class="demo-label">あなたの年代は？</p>
+        <div class="demo-chips" id="demo-age">
+          <button class="demo-chip" onclick="selectDemo('age','10代')">10代</button>
+          <button class="demo-chip" onclick="selectDemo('age','20代')">20代</button>
+          <button class="demo-chip" onclick="selectDemo('age','30代')">30代</button>
+          <button class="demo-chip" onclick="selectDemo('age','40代')">40代</button>
+          <button class="demo-chip" onclick="selectDemo('age','50代以上')">50代以上</button>
+        </div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
+
+      <div class="demo-block">
+        <p class="demo-label">現在の雇用形態は？</p>
+        <div class="demo-chips" id="demo-employment">
+          <button class="demo-chip" onclick="selectDemo('employment','正社員')">正社員</button>
+          <button class="demo-chip" onclick="selectDemo('employment','契約・派遣')">契約・派遣</button>
+          <button class="demo-chip" onclick="selectDemo('employment','フリーランス')">フリーランス</button>
+          <button class="demo-chip" onclick="selectDemo('employment','学生・求職中')">学生・求職中</button>
+          <button class="demo-chip" onclick="selectDemo('employment','その他')">その他</button>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <p class="demo-label">業界は？</p>
+        <div class="demo-chips" id="demo-industry">
+          <button class="demo-chip" onclick="selectDemo('industry','IT・Web')">IT・Web</button>
+          <button class="demo-chip" onclick="selectDemo('industry','営業・販売')">営業・販売</button>
+          <button class="demo-chip" onclick="selectDemo('industry','医療・介護')">医療・介護</button>
+          <button class="demo-chip" onclick="selectDemo('industry','クリエイティブ')">クリエイティブ</button>
+          <button class="demo-chip" onclick="selectDemo('industry','製造・物流')">製造・物流</button>
+          <button class="demo-chip" onclick="selectDemo('industry','金融・公務')">金融・公務</button>
+          <button class="demo-chip" onclick="selectDemo('industry','その他')">その他</button>
+        </div>
+      </div>
+
+      <button class="btn-start demo-go" onclick="startQuiz()">診断を始める</button>
+      <button class="demo-skip" onclick="startQuiz()">スキップして始める →</button>
+    </div>
+  </div>
+
+  <!-- クイズ（11問×3ステップ） -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-header">
+      <div class="quiz-header-inner">
+        <div class="quiz-step-row">
+          <span id="step-label" class="step-label">STEP 1 / 3</span>
+          <span id="step-progress" class="step-progress">0 / 35問完了</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
       </div>
     </div>
     <div class="quiz-body">
-      <div class="q-card">
-        <p class="q-num" id="q-num">Q1</p>
-        <p class="q-text" id="q-text"></p>
-        <div class="choices" id="choices"></div>
-      </div>
+      <div id="step-questions"></div>
       <div class="quiz-nav">
-        <button class="btn-back" id="btn-back" onclick="prevQuestion()" disabled>← 戻る</button>
-        <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>次へ →</button>
+        <button class="btn-back" id="btn-back" onclick="prevStep()" disabled>← 戻る</button>
+        <button class="btn-next" id="btn-next" onclick="nextStep()" disabled>次へ →</button>
       </div>
     </div>
   </div>
 
   <!-- 結果 -->
   <div id="screen-result" class="screen">
-    <div class="result-hero" id="result-hero">
-      <p class="result-eyebrow">YOUR CAREER TYPE</p>
-      <div class="result-badge" id="result-badge">
-        <span class="badge-label">診断タイプ</span>
-        <span class="badge-type" id="badge-type"></span>
-        <span class="badge-nick" id="badge-nick"></span>
+
+    <div class="result-header">
+      <div class="result-header-inner">
+        <div class="result-hero-text">
+          <p class="result-eyebrow">CAREER DIAGNOSIS — YOUR RESULT</p>
+          <h1 class="result-type" id="badge-type"></h1>
+          <p class="result-nick" id="badge-nick"></p>
+          <div class="result-state-row">
+            <span class="state-badge" id="result-state-badge"></span>
+          </div>
+          <p class="result-combined" id="badge-result"></p>
+          <p class="result-catch" id="badge-catch"></p>
+        </div>
+        <div class="result-hero-image">
+          <img id="result-char-img" class="result-char-img" src="" alt="" onerror="this.style.display='none'">
+        </div>
       </div>
     </div>
+
     <div class="result-body">
-      <div class="r-card">
-        <p class="r-card-title">あなたはこんな人</p>
-        <p class="r-desc" id="r-desc"></p>
-      </div>
-      <div class="r-card">
-        <p class="r-card-title">向いている仕事</p>
+
+      <section class="report-section">
+        <h2 class="section-label">タイプ解説</h2>
+        <p class="section-text" id="r-desc"></p>
+      </section>
+
+      <hr class="section-rule">
+
+      <section class="report-section score-report">
+        <h2 class="section-label">メイン適性スコア</h2>
+        <p class="score-report-sub">回答から算出した職業適性の上位8項目です。</p>
+        <div id="score-bars" class="score-bars"></div>
+        <div id="score-summary" style="display:none"></div>
+      </section>
+
+      <hr class="section-rule">
+
+      <section class="report-section">
+        <h2 class="section-label">向いている仕事</h2>
         <div class="tags" id="tags-good"></div>
-      </div>
-      <div class="r-card">
-        <p class="r-card-title">避けた方がいい環境</p>
+
+        <h2 class="section-label section-label-gap">向いている環境</h2>
+        <div class="tags" id="tags-goodenv"></div>
+
+        <h2 class="section-label section-label-gap">向いていない環境</h2>
         <div class="tags" id="tags-bad"></div>
-      </div>
-      <div class="r-card">
-        <p class="r-card-title">次の行動</p>
-        <ul class="next-list" id="next-list"></ul>
-      </div>
-      <div class="sharp-block">
-        <p class="sharp-label">残酷な一言</p>
+      </section>
+
+      <hr class="section-rule">
+
+      <section class="sharp-section">
+        <p class="sharp-eyebrow">辛口コメント</p>
         <p class="sharp-text" id="sharp-text"></p>
-      </div>
+      </section>
+
+      <hr class="section-rule">
+
+      <section class="report-section">
+        <h2 class="section-label">次に確認すべきこと</h2>
+        <ul class="next-list" id="next-list"></ul>
+      </section>
+
+      <div class="cta-block" id="cta-block"></div>
+
+      <div class="line-section" id="result-line-section"></div>
+
+      <!-- 診断精度フィードバック -->
+      <section class="feedback-section" id="feedback-section">
+        <p class="feedback-label">診断結果はどのくらい当てはまりましたか？</p>
+        <div class="feedback-stars" id="feedback-stars">
+          <button class="fb-star" onclick="submitFeedback(1)" aria-label="1 — 全く当てはまらない">1</button>
+          <button class="fb-star" onclick="submitFeedback(2)" aria-label="2">2</button>
+          <button class="fb-star" onclick="submitFeedback(3)" aria-label="3 — どちらとも言えない">3</button>
+          <button class="fb-star" onclick="submitFeedback(4)" aria-label="4">4</button>
+          <button class="fb-star" onclick="submitFeedback(5)" aria-label="5 — とても当てはまる">5</button>
+        </div>
+        <p class="feedback-hint">1=全く当てはまらない　5=とても当てはまる</p>
+        <p class="feedback-thanks" id="feedback-thanks" style="display:none">フィードバックありがとうございます！</p>
+      </section>
+
       <button class="retry-btn" onclick="restart()">もう一度診断する</button>
-      <p class="note">※この診断は娯楽目的です。転職・退職の意思決定は自己責任でどうぞ。</p>
+
+      <p class="note">※この診断は参考情報です。転職・退職の意思決定は十分な情報収集のうえ、ご自身でご判断ください。給付金等の受給には各種条件があり、受給を保証するものではありません。</p>
+
+      <!-- JS互換用（非表示） -->
+      <span id="r-state-desc" style="display:none"></span>
+      <span id="r-compatibility" style="display:none"></span>
+      <div id="tags-sub" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- 追加チェック -->
+  <div id="screen-check" class="screen">
+    <div class="quiz-header">
+      <div class="quiz-header-inner">
+        <div class="quiz-step-row">
+          <span id="ck-label" class="step-label">質問 1 / 7</span>
+          <span id="ck-pct" class="step-progress">14%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="ck-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-body">
+      <div class="check-intro">
+        <p class="check-intro-title">退職前のお金チェック</p>
+        <p class="check-intro-body">働き方を変える前に、退職後の収入・手続き・確認事項を整理しておきましょう。回答内容をもとに、確認すべきポイントを案内します。</p>
+      </div>
+      <div class="q-card-check">
+        <p class="q-num-check" id="ck-num">Q1</p>
+        <p class="q-text-check" id="ck-text"></p>
+        <div class="ck-choices" id="ck-choices"></div>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn-back" id="ck-back" onclick="prevCheckQuestion()" disabled>← 戻る</button>
+        <button class="btn-next" id="ck-next" onclick="nextCheckQuestion()" disabled>次へ →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 追加チェック結果 -->
+  <div id="screen-check-result" class="screen">
+    <div class="check-result-header">
+      <p class="result-eyebrow">退職前のお金チェック — 確認事項</p>
+      <h1 class="check-result-title">あなたの回答を見ると、退職前に以下を確認しておくと安心です。</h1>
+      <p class="check-result-note">各項目はあくまで参考情報です。正確な内容はハローワーク等の公的機関でご確認ください。</p>
+    </div>
+    <div class="result-body">
+      <div id="check-items-list"></div>
+
+      <div class="line-section">
+        <p class="line-title">詳しい情報・個別相談</p>
+        <p class="line-desc">診断結果をもとに、あなたが退職前に確認すべきお金・制度・手続きのポイントをLINEで無料チェックできます。</p>
+        <a class="line-btn" href="https://line.me/R/ti/p/@sample" target="_blank" rel="noopener noreferrer" onclick="trackLineClick()">LINEで無料チェックを受ける</a>
+      </div>
+
+      <button class="retry-btn" onclick="restart()">最初からやり直す</button>
+
+      <p class="note">当サイトは、失業給付の受給可否・金額・開始時期を保証するものではありません。最終的な判断はハローワークが行います。当サイトは申請代理・書類作成代理・法律相談ではなく、退職前後の確認事項を整理するための情報提供サービスです。事実と異なる申告や不正受給を助長するものではありません。</p>
     </div>
   </div>
 
